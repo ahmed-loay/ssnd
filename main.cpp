@@ -11,6 +11,8 @@
 
 using std::string;
 
+int nextNotiId = 0;
+
 struct NotiInfo {
     string app_name;
     uint32_t replaces_id;
@@ -48,7 +50,7 @@ u org.freedesktop.Notifications.Notify (
 */
 uint32_t Notify(string app_name, uint32_t replaces_id, string app_icon, string summary, string body, std::vector<string> actions, std::vector<std::tuple<string, DBus::Variant>> hints, int32_t timeout){
     std::cout << summary << std::endl;
-    return 2739;
+    return nextNotiId++;
 }
 
 int main()
