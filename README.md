@@ -10,3 +10,8 @@ A lightweight semi-complaint notification daemon according to [the freedesktop.o
 Tired of wrestling with dbus-monitor and awk to listen for notifications? SSND offers a lightweight yet handy solution for handling notifications directly from your scripts. ;)
 
 While developing Shudder-bar, I thought I could just read notifications off of existing daemons and simply hide their existing pop-ups, quickly finding out later that it's hard if not impossible to, thus SSND.
+
+## 📖 Usage
+
+#### • `$ ssnd --help` :
+`Usage: ssnd [--format json|raw] [--bus system|session] COMMAND`
