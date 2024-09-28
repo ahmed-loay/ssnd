@@ -3,8 +3,8 @@
 #include <iostream>
 #include <string>
 
-#include "cliflags.h"
 #include "../defaults.h"
+#include "flags.h"
 
 using std::string;
 
@@ -15,13 +15,15 @@ namespace CliUtils {
 
     bool flagValueValid(string flag, string value){
         //if flag doesn't exist in flag_options then, any value is valid
-        if(flag_options.count(flag) == 0){
+        if(flags.count(flag) == 0){
             return true;
         }
 
-        for(string validValue: flag_options[flag]){
-            return value == validValue;
+        for(string validValue: flags[flag].allowedValues){
+            if(value == validValue) return true;
         }
+
+        return false;
     }
 
     //TODO: factor out err printing from processArgs
@@ -49,7 +51,8 @@ namespace CliUtils {
 
                     if(flagValueValid(flag, argv[i + 1])){
                         //inc i, taking the flag's value and skipping iterating over it
-                        cmd_defaults[flag] = argv[++i];
+                        //cmd_defaults[flag] = argv[++i];
+                        flags[flag].flagProcessor(argv[i + 1]);
                     }
                     else {
                         std::cout << "ERR: Invalid value for --" << flag << " flag!" << std::endl;

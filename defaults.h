@@ -4,7 +4,7 @@
 #include <string>
 using std::string;
 
-std::unordered_map<string, string> cmd_defaults = {
+inline std::unordered_map<string, string> cmd_defaults = {
     {"format", "raw"},
     {"bus", "session"},
     {"handler", "echo"}
