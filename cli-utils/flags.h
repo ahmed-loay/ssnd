@@ -23,7 +23,7 @@ namespace CliUtils {
         ARG_PROCESSING_STATE (*flagProcessor)(std::string value);
     };
 
-    inline std::unordered_map<std::string, FlagOptions> flags = {
+    inline static std::unordered_map<std::string, FlagOptions> flags = {
         {"format", FlagOptions{.allowedValues={"raw", "json"}, .flagProcessor=FlagProcessor::formatFlagProcessor}},
         {"bus", FlagOptions{.allowedValues={"session", "system"}, .flagProcessor=FlagProcessor::bugFlagProcessor}}
     };

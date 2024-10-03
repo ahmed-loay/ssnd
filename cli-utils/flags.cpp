@@ -5,10 +5,12 @@
 
 using namespace CliUtils;
 
+//flags with a set of specified flags don't have to check for empty values
+
 ARG_PROCESSING_STATE FlagProcessor::bugFlagProcessor(std::string passedValue)
 {
-    if(passedValue.empty()) 
-        return ARG_PROCESSING_STATE::TOOFEWARGS;
+    /*if(passedValue.empty()) 
+        return ARG_PROCESSING_STATE::TOOFEWARGS;*/
 
     cmd_defaults["bus"] = passedValue;
 
@@ -17,8 +19,8 @@ ARG_PROCESSING_STATE FlagProcessor::bugFlagProcessor(std::string passedValue)
 
 ARG_PROCESSING_STATE FlagProcessor::formatFlagProcessor(std::string passedValue)
 {
-    if(passedValue.empty()) 
-        return ARG_PROCESSING_STATE::TOOFEWARGS;
+    /*if(passedValue.empty()) 
+        return ARG_PROCESSING_STATE::TOOFEWARGS;*/
 
     cmd_defaults["format"] = passedValue;
 

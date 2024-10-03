@@ -1,6 +1,8 @@
 #pragma once
 
+#include "flags.h"
+
 namespace CliUtils {
     void printUsage();
-    int processArgs(int argc, const char* argv[]);
+    ARG_PROCESSING_STATE processArgs(int argc, const char* argv[]);
 }

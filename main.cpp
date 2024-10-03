@@ -65,9 +65,7 @@ uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, 
 
 int main(int argc, const char* argv[])
 {
-    if(CliUtils::processArgs(argc, argv)){
-        return 1;
-    }
+    CliUtils::processArgs(argc, argv);
 
     std::shared_ptr<DBus::Dispatcher> dbusDispatcher = DBus::StandaloneDispatcher::create();
     std::shared_ptr<DBus::Connection> dbusConn = dbusDispatcher->create_connection(DBus::BusType::SESSION);
