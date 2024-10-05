@@ -9,6 +9,7 @@
 #include "dbus-signatures/serverinfo_signature.h"
 #include <dbus-cxx.h>
 
+#include "defaults.h"
 #include "json-builder/jsonBuilder.h"
 #include "cli-utils/cliutils.h"
 
@@ -52,14 +53,24 @@ u org.freedesktop.Notifications.Notify (
 );
 */
 uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, string summary, string body, std::vector<string> actions, std::vector<std::tuple<string, DBus::Variant>> hints, int32_t timeout){
-    JsonBuilder outputStr;
+    JsonUtils::DBusNotification notification({
+        .app_name = app_name,
+        .app_icon = app_icon,
+        .summary = summary,
+        .body = body,
+        .replaces_id = replaces_id,
+        .actions = actions,
+        .hints = hints,
+        .timeout = timeout,
+    });
+
+    if(cmd_defaults["format"] == "json"){
+        std::cout << notification.toJson() << std::endl;
+    }
+    else if(cmd_defaults["format"] == "raw"){
+        std::cout << notification;
+    }
     
-    outputStr.pushPair("app_name", app_name);
-    outputStr.pushPair("app_icon", app_icon);
-    outputStr.pushPair("summary", summary);
-    outputStr.pushPair("body", body);
-    
-    std::cout << outputStr.finalize() << std::endl;
     return nextNotiId++;
 }
 
@@ -68,7 +79,14 @@ int main(int argc, const char* argv[])
     CliUtils::processArgs(argc, argv);
 
     std::shared_ptr<DBus::Dispatcher> dbusDispatcher = DBus::StandaloneDispatcher::create();
-    std::shared_ptr<DBus::Connection> dbusConn = dbusDispatcher->create_connection(DBus::BusType::SESSION);
+
+    std::shared_ptr<DBus::Connection> dbusConn;
+    if(cmd_defaults["bus"] == "session"){
+        dbusConn = dbusDispatcher->create_connection(DBus::BusType::SESSION);
+    }
+    else if(cmd_defaults["bus"] == "system"){
+        dbusConn = dbusDispatcher->create_connection(DBus::BusType::SYSTEM);
+    }
  
     if(dbusConn->request_name("org.freedesktop.Notifications", DBUSCXX_NAME_FLAG_REPLACE_EXISTING) != DBus::RequestNameResponse::PrimaryOwner)
         std::cout << "Warn: org.freedesktop.Notifications is already registered! (Maybe a notification daemon is already running?)" << std::endl;
