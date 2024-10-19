@@ -1,8 +1,12 @@
 #include <thread>
 #include <chrono>
 #include <string>
+#include <cstring>
 #include <iostream>
+#include <format>
+#include <algorithm>
 
+#include <sys/types.h>
 #include <unistd.h>
 
 //signatures MUST come first
@@ -12,6 +16,8 @@
 #include "defaults.h"
 #include "json-builder/jsonBuilder.h"
 #include "cli-utils/cliutils.h"
+
+#include "utils.h"
 
 using std::string;
 
@@ -52,6 +58,7 @@ u org.freedesktop.Notifications.Notify (
  	in i expire_timeout
 );
 */
+
 uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, string summary, string body, std::vector<string> actions, std::vector<std::tuple<string, DBus::Variant>> hints, int32_t timeout){
     JsonUtils::DBusNotification notification({
         .app_name = app_name,
@@ -64,13 +71,55 @@ uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, 
         .timeout = timeout,
     });
 
-    if(cmd_defaults["format"] == "json"){
-        std::cout << notification.toJson() << std::endl;
+    pid_t forkResult = fork();
+    if(!cmd_defaults.empty()){
+        if(forkResult < 0){
+            std::cout << "Failed to fork process! Exiting!\n";
+            exit(1);
+        }
+        else if(forkResult == 0){
+            if(cmd_defaults["format"] == "json"){
+                std::string notiJson = notification.toJson();
+                std::cout << notiJson << std::endl;
+
+                std::string jsonEnv = "noti_json=" + notiJson;
+
+                static char* newargv[] = {cmd_defaults["handler"].data(), NULL};
+                static char* newenvp[] = { jsonEnv.data(), NULL};
+
+                execvpe(cmd_defaults["handler"].data(), newargv, newenvp);
+                
+                perror("execvpe");   /* execvpe() returns only on error */
+                exit(EXIT_FAILURE);
+            }
+            else if(cmd_defaults["format"] == "raw"){
+                std::stringstream ss;
+                ss << notification;
+
+                std::string rawOutput = ss.str();
+                std::cout << rawOutput << std::endl;
+
+                static char* newargv[] = {cmd_defaults["handler"].data(), NULL};
+                auto newenvp = rawOutputToEnvs(rawOutput);
+                
+                auto test = vecStrToCStrArray(newenvp);
+
+                execvpe(cmd_defaults["handler"].data(), newargv, (*test.get()));
+                
+                perror("execvpe");   /* execvpe() returns only on error */
+                exit(EXIT_FAILURE);
+            }
+        }
     }
-    else if(cmd_defaults["format"] == "raw"){
-        std::cout << notification;
+    else {
+        if(cmd_defaults["format"] == "json"){
+            std::cout << notification.toJson();
+        }
+        else if(cmd_defaults["format"] == "raw"){
+            std::cout << notification;
+        }
     }
-    
+
     return nextNotiId++;
 }
 
