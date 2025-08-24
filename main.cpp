@@ -10,12 +10,12 @@
 #include <unistd.h>
 
 //signatures MUST come first
-#include "dbus-signatures/serverinfo_signature.h"
+#include "serverinfo_signature.h"
 #include <dbus-cxx.h>
 
 #include "defaults.h"
-#include "json-builder/jsonBuilder.h"
-#include "cli-utils/cliutils.h"
+#include "jsonBuilder.h"
+#include "cliutils.h"
 
 #include "utils.h"
 

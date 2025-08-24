@@ -1,0 +1,6 @@
+[submodule "extern/dbus-cxx"]
+	path = extern/dbus-cxx
+	url = https://github.com/dbus-cxx/dbus-cxx.git
+[submodule "extern/libsigc++"]
+	path = extern/libsigc++
+	url = https://github.com/libsigcplusplus/libsigcplusplus.git
