@@ -71,8 +71,8 @@ uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, 
         .timeout = timeout,
     });
 
-    pid_t forkResult = fork();
-    if(!cmd_defaults.empty()){
+    if(!cmd_defaults["handler"].empty()){
+        pid_t forkResult = fork();
         if(forkResult < 0){
             std::cout << "Failed to fork process! Exiting!\n";
             exit(1);
@@ -80,7 +80,6 @@ uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, 
         else if(forkResult == 0){
             if(cmd_defaults["format"] == "json"){
                 std::string notiJson = notification.toJson();
-                std::cout << notiJson << std::endl;
 
                 std::string jsonEnv = "noti_json=" + notiJson;
 
@@ -97,7 +96,6 @@ uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, 
                 ss << notification;
 
                 std::string rawOutput = ss.str();
-                std::cout << rawOutput << std::endl;
 
                 static char* newargv[] = {cmd_defaults["handler"].data(), NULL};
                 auto newenvp = rawOutputToEnvs(rawOutput);
