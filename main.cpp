@@ -111,7 +111,7 @@ uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, 
     }
     else {
         if(cmd_defaults["format"] == "json"){
-            std::cout << notification.toJson();
+            std::cout << notification.toJson() << std::endl;
         }
         else if(cmd_defaults["format"] == "raw"){
             std::cout << notification;

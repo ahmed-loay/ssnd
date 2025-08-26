@@ -5,9 +5,9 @@
 
 using namespace CliUtils;
 
-//flags with a set of specified flags don't have to check for empty values
+//flags with a set of specified values don't have to check for empty values
 
-ARG_PROCESSING_STATE FlagProcessor::bugFlagProcessor(std::string passedValue)
+ARG_PROCESSING_STATE FlagProcessor::busFlagProcessor(std::string passedValue)
 {
     /*if(passedValue.empty()) 
         return ARG_PROCESSING_STATE::TOOFEWARGS;*/

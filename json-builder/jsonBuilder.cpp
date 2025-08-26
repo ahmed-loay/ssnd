@@ -79,13 +79,13 @@ std::string JsonUtils::DBusNotification::toJson()
 
 std::ostream &JsonUtils::operator<<(std::ostream &out, const DBusNotification &noti)
 {
-     return out << "app_name \"" << noti.app_name << "\"\n"
-                << "app_icon \"" << noti.app_icon << "\"\n"
-                << "summary \"" << noti.summary << "\"\n"
-                << "body \"" << noti.body << "\"\n"
-                << "category \"" << noti.category << "\"\n"
-                << "image_path \"" << noti.image_path << "\"\n"
-                << "desktop_entry \"" << noti.desktop_entry << "\"\n"
-                << "urgency \"" << std::to_string(noti.urgency) << "\"\n"
-                << "sender_pid \"" << std::to_string(noti.sender_pid) << "\"\n";
+     return out << "app_name \"" << noti.app_name << "\"" << std::endl
+                << "app_icon \"" << noti.app_icon << "\"" << std::endl
+                << "summary \"" << noti.summary << "\"" << std::endl
+                << "body \"" << noti.body << "\"" << std::endl
+                << "category \"" << noti.category << "\"" << std::endl
+                << "image_path \"" << noti.image_path << "\"" << std::endl
+                << "desktop_entry \"" << noti.desktop_entry << "\"" << std::endl
+                << "urgency \"" << std::to_string(noti.urgency) << "\"" << std::endl
+                << "sender_pid \"" << std::to_string(noti.sender_pid) << "\"" << std::endl;
 }
