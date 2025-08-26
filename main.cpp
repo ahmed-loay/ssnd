@@ -81,7 +81,7 @@ uint32_t NotifyCallback(string app_name, uint32_t replaces_id, string app_icon, 
             if(cmd_defaults["format"] == "json"){
                 std::string notiJson = notification.toJson();
 
-                std::string jsonEnv = "noti_json=" + notiJson;
+                std::string jsonEnv = "ssnd_json=" + notiJson;
 
                 static char* newargv[] = {cmd_defaults["handler"].data(), NULL};
                 static char* newenvp[] = { jsonEnv.data(), NULL};
